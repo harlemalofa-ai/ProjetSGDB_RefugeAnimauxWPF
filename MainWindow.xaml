@@ -1,0 +1,598 @@
+<Window x:Class="RefugeAnimauxWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Refuge Animaux - WPF"
+        Height="760"
+        Width="1250">
+
+    <Grid Margin="10">
+        <TabControl>
+
+            <TabItem Header="Dashboard">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Button Content="Actualiser toutes les données"
+                            Width="220"
+                            Height="35"
+                            HorizontalAlignment="Left"
+                            Command="{Binding ChargerToutCommande}"
+                            Margin="0,0,0,10"/>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <GroupBox Header="Tableau de bord" Margin="0,0,10,0">
+                            <DataGrid ItemsSource="{Binding TableauBord}" AutoGenerateColumns="True" IsReadOnly="True"/>
+                        </GroupBox>
+
+                        <GroupBox Header="Diagnostic / cohérence" Grid.Column="1">
+                            <DataGrid ItemsSource="{Binding Diagnostic}" AutoGenerateColumns="True" IsReadOnly="True"/>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Animaux">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="Ajouter un animal avec entrée automatique" Margin="0,0,0,10">
+                        <Grid Margin="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="170"/>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="170"/>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Identifiant"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NouveauAnimalIdentifiant, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Nom"/>
+                            <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding NouveauAnimalNom, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="Type"/>
+                            <ComboBox Grid.Row="0" Grid.Column="5" Text="{Binding NouveauAnimalType, UpdateSourceTrigger=PropertyChanged}" Margin="3">
+                                <ComboBoxItem Content="chat"/>
+                                <ComboBoxItem Content="chien"/>
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="0" Grid.Column="6" Text="Sexe"/>
+                            <ComboBox Grid.Row="0" Grid.Column="7" Text="{Binding NouveauAnimalSexe, UpdateSourceTrigger=PropertyChanged}" Margin="3">
+                                <ComboBoxItem Content="M"/>
+                                <ComboBoxItem Content="F"/>
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Naissance"/>
+                            <DatePicker Grid.Row="1" Grid.Column="1" SelectedDate="{Binding NouveauAnimalDateNaissance}" Margin="3"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="Stérilisé"/>
+                            <CheckBox Grid.Row="1" Grid.Column="3" IsChecked="{Binding NouveauAnimalSterilise}" Margin="3"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="4" Text="Raison entrée"/>
+                            <ComboBox Grid.Row="1" Grid.Column="5" Text="{Binding NouveauAnimalRaisonEntree, UpdateSourceTrigger=PropertyChanged}" Margin="3">
+                                <ComboBoxItem Content="abandon"/>
+                                <ComboBoxItem Content="errant"/>
+                                <ComboBoxItem Content="deces_proprietaire"/>
+                                <ComboBoxItem Content="saisie"/>
+                                <ComboBoxItem Content="retour_adoption"/>
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="1" Grid.Column="6" Text="Contact"/>
+                            <TextBox Grid.Row="1" Grid.Column="7" Text="{Binding NouveauAnimalContactEntree, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Date entrée"/>
+                            <DatePicker Grid.Row="2" Grid.Column="1" SelectedDate="{Binding NouveauAnimalDateEntree}" Margin="3"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="Description"/>
+                            <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding NouveauAnimalDescription, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="4" Text="Particularités"/>
+                            <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding NouveauAnimalParticularites, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <Button Grid.Row="2" Grid.Column="7" Content="Ajouter animal" Height="30" Command="{Binding AjouterAnimalCommande}" Margin="3"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="Recherche animal :" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox Width="250" Text="{Binding RechercheAnimal, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <DataGrid ItemsSource="{Binding Animaux}"
+                                  SelectedItem="{Binding AnimalSelectionne, Mode=TwoWay}"
+                                  AutoGenerateColumns="True"
+                                  IsReadOnly="True"
+                                  Margin="0,0,10,0"/>
+
+                        <GroupBox Header="Fiche complète animal" Grid.Column="1">
+                            <TabControl Margin="5">
+
+                                <TabItem Header="Identité">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                        <StackPanel Margin="8">
+                                            <TextBlock Text="Identifiant"/>
+                                            <TextBox Text="{Binding AnimalSelectionne[identifiant]}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Nom"/>
+                                            <TextBox Text="{Binding AnimalSelectionne[nom]}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Type"/>
+                                            <TextBox Text="{Binding AnimalSelectionne[type]}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Sexe"/>
+                                            <TextBox Text="{Binding AnimalSelectionne[sexe]}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="État actuel"/>
+                                            <TextBox Text="{Binding AnimalSelectionne[etat_actuel]}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Date naissance"/>
+                                            <TextBox Text="{Binding AnimalSelectionne[date_naissance]}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Stérilisé"/>
+                                            <TextBox Text="{Binding AnimalSelectionne[sterilise]}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Date stérilisation"/>
+                                            <TextBox Text="{Binding AnimalSelectionne[date_sterilisation]}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Date décès"/>
+                                            <TextBox Text="{Binding AnimalSelectionne[date_deces]}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Description"/>
+                                            <TextBox Text="{Binding AnimalSelectionne[description]}"
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"
+                             Height="90"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Particularités"/>
+                                            <TextBox Text="{Binding AnimalSelectionne[particularites]}"
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"
+                             Height="90"/>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </TabItem>
+
+                                <TabItem Header="Couleurs">
+                                    <DataGrid ItemsSource="{Binding FicheAnimalCouleurs}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"/>
+                                </TabItem>
+
+                                <TabItem Header="Compatibilités">
+                                    <DataGrid ItemsSource="{Binding FicheAnimalCompatibilites}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"/>
+                                </TabItem>
+
+                                <TabItem Header="Vaccins">
+                                    <DataGrid ItemsSource="{Binding FicheAnimalVaccinations}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"/>
+                                </TabItem>
+
+                                <TabItem Header="Historique">
+                                    <DataGrid ItemsSource="{Binding FicheAnimalHistorique}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"/>
+                                </TabItem>
+
+                                <TabItem Header="Adoptions">
+                                    <DataGrid ItemsSource="{Binding FicheAnimalAdoptions}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"/>
+                                </TabItem>
+
+                                <TabItem Header="Familles">
+                                    <DataGrid ItemsSource="{Binding FicheAnimalFamilles}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"/>
+                                </TabItem>
+
+                            </TabControl>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Contacts">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="Ajouter / modifier un contact" Margin="0,0,0,10">
+                        <Grid Margin="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="160"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Identifiant"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ContactId, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Nom"/>
+                            <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding ContactNom, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="Prénom"/>
+                            <TextBox Grid.Row="0" Grid.Column="5" Text="{Binding ContactPrenom, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="0" Grid.Column="6" Text="Rue"/>
+                            <TextBox Grid.Row="0" Grid.Column="7" Text="{Binding ContactRue, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="CP"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ContactCp, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="Localité"/>
+                            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding ContactLocalite, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="4" Text="Registre"/>
+                            <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding ContactRegistre, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="6" Text="GSM"/>
+                            <TextBox Grid.Row="1" Grid.Column="7" Text="{Binding ContactGsm, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Téléphone"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ContactTelephone, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="Email"/>
+                            <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding ContactEmail, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+
+                            <Button Grid.Row="2" Grid.Column="5" Content="Ajouter" Height="30" Margin="3" Command="{Binding AjouterContactCommande}"/>
+                            <Button Grid.Row="2" Grid.Column="7" Content="Modifier" Height="30" Margin="3" Command="{Binding ModifierContactCommande}"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="Recherche contact :" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox Width="250" Text="{Binding RechercheContact, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <DataGrid ItemsSource="{Binding Contacts}"
+                                  SelectedItem="{Binding ContactSelectionne, Mode=TwoWay}"
+                                  AutoGenerateColumns="True"
+                                  IsReadOnly="True"
+                                  Margin="0,0,10,0"/>
+
+                        <GroupBox Header="Fiche complète contact" Grid.Column="1">
+                            <TabControl Margin="5">
+
+                                <TabItem Header="Identité">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                        <StackPanel Margin="8">
+                                            <TextBlock Text="Identifiant"/>
+                                            <TextBox Text="{Binding ContactId}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Nom"/>
+                                            <TextBox Text="{Binding ContactNom}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Prénom"/>
+                                            <TextBox Text="{Binding ContactPrenom}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Rue"/>
+                                            <TextBox Text="{Binding ContactRue}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Code postal"/>
+                                            <TextBox Text="{Binding ContactCp}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Localité"/>
+                                            <TextBox Text="{Binding ContactLocalite}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Registre national"/>
+                                            <TextBox Text="{Binding ContactRegistre}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="GSM"/>
+                                            <TextBox Text="{Binding ContactGsm}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Téléphone"/>
+                                            <TextBox Text="{Binding ContactTelephone}"
+                             IsReadOnly="True"
+                             Margin="0,0,0,6"/>
+
+                                            <TextBlock Text="Email"/>
+                                            <TextBox Text="{Binding ContactEmail}"
+                             IsReadOnly="True"/>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </TabItem>
+
+                                <TabItem Header="Rôles">
+                                    <DataGrid ItemsSource="{Binding FicheContactRoles}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"/>
+                                </TabItem>
+
+                                <TabItem Header="Adoptions">
+                                    <DataGrid ItemsSource="{Binding FicheContactAdoptions}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"/>
+                                </TabItem>
+
+                                <TabItem Header="Familles">
+                                    <DataGrid ItemsSource="{Binding FicheContactFamilles}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"/>
+                                </TabItem>
+
+                                <TabItem Header="Entrées">
+                                    <DataGrid ItemsSource="{Binding FicheContactEntrees}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"/>
+                                </TabItem>
+
+                                <TabItem Header="Sorties">
+                                    <DataGrid ItemsSource="{Binding FicheContactSorties}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"/>
+                                </TabItem>
+
+                            </TabControl>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Adoptions">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="Ajouter / modifier adoption" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal" Margin="8">
+                            <TextBlock Text="Animal" VerticalAlignment="Center"/>
+                            <TextBox Width="130" Text="{Binding AdoptionAnimal, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                            <TextBlock Text="Contact" VerticalAlignment="Center"/>
+                            <TextBox Width="80" Text="{Binding AdoptionContact, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                            <TextBlock Text="Date" VerticalAlignment="Center"/>
+                            <DatePicker SelectedDate="{Binding AdoptionDate}" Margin="5"/>
+                            <TextBlock Text="Statut" VerticalAlignment="Center"/>
+                            <ComboBox Width="160" Text="{Binding AdoptionStatut, UpdateSourceTrigger=PropertyChanged}" Margin="5">
+                                <ComboBoxItem Content="demande"/>
+                                <ComboBoxItem Content="acceptee"/>
+                                <ComboBoxItem Content="rejet_environnement"/>
+                                <ComboBoxItem Content="rejet_comportement"/>
+                            </ComboBox>
+                            <Button Content="Ajouter" Width="100" Margin="5" Command="{Binding AjouterAdoptionCommande}"/>
+                            <Button Content="Modifier statut" Width="130" Margin="5" Command="{Binding ModifierStatutAdoptionCommande}"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding Adoptions}" SelectedItem="{Binding AdoptionSelectionnee, Mode=TwoWay}" AutoGenerateColumns="True" IsReadOnly="True"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Familles d'accueil">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="Ajouter / clôturer famille d'accueil" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal" Margin="8">
+                            <TextBlock Text="Animal" VerticalAlignment="Center"/>
+                            <TextBox Width="130" Text="{Binding FamilleAnimal, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                            <TextBlock Text="Contact" VerticalAlignment="Center"/>
+                            <TextBox Width="80" Text="{Binding FamilleContact, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                            <TextBlock Text="Début" VerticalAlignment="Center"/>
+                            <DatePicker SelectedDate="{Binding FamilleDateDebut}" Margin="5"/>
+                            <Button Content="Ajouter famille" Width="130" Margin="5" Command="{Binding AjouterFamilleCommande}"/>
+                            <TextBlock Text="Contact retour" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                            <TextBox Width="80" Text="{Binding FamilleContactRetour, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                            <TextBlock Text="Fin" VerticalAlignment="Center"/>
+                            <DatePicker SelectedDate="{Binding FamilleDateFin}" Margin="5"/>
+                            <Button Content="Clôturer" Width="100" Margin="5" Command="{Binding CloturerFamilleCommande}"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding FamillesAccueil}" AutoGenerateColumns="True" IsReadOnly="True"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Vaccins">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="Vaccins et vaccinations" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal" Margin="8">
+                            <TextBlock Text="Id vaccin" VerticalAlignment="Center"/>
+                            <TextBox Width="70" Text="{Binding VaccinId, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                            <TextBlock Text="Nom" VerticalAlignment="Center"/>
+                            <TextBox Width="150" Text="{Binding VaccinNom, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                            <Button Content="Ajouter vaccin" Width="120" Margin="5" Command="{Binding AjouterVaccinCommande}"/>
+                            <TextBlock Text="Animal" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                            <TextBox Width="130" Text="{Binding VaccinationAnimal, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                            <TextBlock Text="Vaccin" VerticalAlignment="Center"/>
+                            <TextBox Width="70" Text="{Binding VaccinationVaccin, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                            <TextBlock Text="Date" VerticalAlignment="Center"/>
+                            <DatePicker SelectedDate="{Binding VaccinationDate}" Margin="5"/>
+                            <Button Content="Ajouter vaccination" Width="150" Margin="5" Command="{Binding AjouterVaccinationCommande}"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <GroupBox Header="Vaccins" Margin="0,0,10,0">
+                            <DataGrid ItemsSource="{Binding Vaccins}" AutoGenerateColumns="True" IsReadOnly="True"/>
+                        </GroupBox>
+
+                        <GroupBox Header="Vaccinations" Grid.Column="1">
+                            <DataGrid ItemsSource="{Binding Vaccinations}" AutoGenerateColumns="True" IsReadOnly="True"/>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Refuge">
+                <Grid Margin="10">
+                    <DataGrid ItemsSource="{Binding AnimauxPresents}" AutoGenerateColumns="True" IsReadOnly="True"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Couleurs / rôles / compatibilités">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="Actions référentiels" Margin="0,0,0,10">
+                        <StackPanel Margin="8">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Couleur id" VerticalAlignment="Center"/>
+                                <TextBox Width="70" Text="{Binding CouleurId, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                                <TextBlock Text="Nom" VerticalAlignment="Center"/>
+                                <TextBox Width="120" Text="{Binding CouleurNom, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                                <Button Content="Ajouter couleur" Width="120" Margin="5" Command="{Binding AjouterCouleurCommande}"/>
+                                <TextBlock Text="Rôle id" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                                <TextBox Width="70" Text="{Binding RoleId, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                                <TextBlock Text="Nom" VerticalAlignment="Center"/>
+                                <TextBox Width="120" Text="{Binding RoleNom, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                                <Button Content="Ajouter rôle" Width="120" Margin="5" Command="{Binding AjouterRoleCommande}"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Animal" VerticalAlignment="Center"/>
+                                <TextBox Width="130" Text="{Binding AssocAnimalCouleur, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                                <TextBlock Text="Couleur" VerticalAlignment="Center"/>
+                                <TextBox Width="70" Text="{Binding AssocCouleurId, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                                <Button Content="Associer couleur" Width="130" Margin="5" Command="{Binding AjouterCouleurAnimalCommande}"/>
+                                <TextBlock Text="Contact" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                                <TextBox Width="80" Text="{Binding AssocContactRole, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                                <TextBlock Text="Rôle" VerticalAlignment="Center"/>
+                                <TextBox Width="70" Text="{Binding AssocRoleId, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                                <Button Content="Associer rôle" Width="130" Margin="5" Command="{Binding AjouterRoleContactCommande}"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Animal" VerticalAlignment="Center"/>
+                                <TextBox Width="130" Text="{Binding AssocAnimalCompat, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                                <TextBlock Text="Compat." VerticalAlignment="Center"/>
+                                <TextBox Width="70" Text="{Binding AssocCompatId, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                                <TextBlock Text="Valeur" VerticalAlignment="Center"/>
+                                <ComboBox Width="100" Text="{Binding AssocCompatValeur, UpdateSourceTrigger=PropertyChanged}" Margin="5">
+                                    <ComboBoxItem Content="oui"/>
+                                    <ComboBoxItem Content="non"/>
+                                    <ComboBoxItem Content="non_teste"/>
+                                </ComboBox>
+                                <TextBlock Text="Description" VerticalAlignment="Center"/>
+                                <TextBox Width="180" Text="{Binding AssocCompatDescription, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                                <Button Content="Associer compatibilité" Width="170" Margin="5" Command="{Binding AjouterCompatibiliteAnimalCommande}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <GroupBox Header="Couleurs" Margin="0,0,10,0">
+                            <DataGrid ItemsSource="{Binding Couleurs}" AutoGenerateColumns="True" IsReadOnly="True"/>
+                        </GroupBox>
+
+                        <GroupBox Header="Rôles" Grid.Column="1" Margin="0,0,10,0">
+                            <DataGrid ItemsSource="{Binding Roles}" AutoGenerateColumns="True" IsReadOnly="True"/>
+                        </GroupBox>
+
+                        <GroupBox Header="Compatibilités" Grid.Column="2">
+                            <DataGrid ItemsSource="{Binding Compatibilites}" AutoGenerateColumns="True" IsReadOnly="True"/>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>
