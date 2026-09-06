@@ -10,5 +10,12 @@ obj/
 TestResults/
 packages/
 
+# Local configuration / secrets
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+appsettings.*.local.json
+
 .DS_Store
 Thumbs.db
