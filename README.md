@@ -164,6 +164,6 @@ Elle utilise aussi des fonctions d’affichage, de tableau de bord, de fiches d�
 
 ## Contexte
 
-Projet réalisé par **Harlem Alofa**, étudiant en **Bachelier en Informatique — orientation Développement d’applications**.
+Projet réalisé par **Harlem Kponve Alofa**, étudiant en **Bachelier en Informatique — orientation Développement d’applications**.
 
 Ce dépôt met principalement en évidence des compétences en **C#, .NET, WPF, XAML, MVVM, PostgreSQL, SQL/PLpgSQL et architecture d’applications métier**.
